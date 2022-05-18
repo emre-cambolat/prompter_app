@@ -1,4 +1,4 @@
-package com.example.prompter_app
+package com.emrecambolat.prompterapp
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-# prompter_app
+# Prompter App
 
 A new Flutter project.
 

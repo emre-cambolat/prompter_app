@@ -1,6 +1,6 @@
 {
-    "name": "prompter_app",
-    "short_name": "prompter_app",
+    "name": "Prompter App",
+    "short_name": "Prompter App",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

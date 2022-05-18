@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:prompter_app/show_text_page.dart';
+import 'package:prompter_app/pages/app_info.dart';
+import 'package:prompter_app/pages/select_text.dart';
+import 'package:prompter_app/pages/set_text_style.dart';
+import 'set_keys.dart';
+import 'show_text_page.dart';
 
 class KeyEventPageUI extends StatefulWidget {
   const KeyEventPageUI({Key? key}) : super(key: key);
@@ -45,6 +48,16 @@ class _KeyEventPageUIState extends State<KeyEventPageUI> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("Key Event Page"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                _openPage(page: AppInfoUI());
+              },
+              icon: Icon(
+                Icons.info,
+              ),
+            ),
+          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -57,26 +70,27 @@ class _KeyEventPageUIState extends State<KeyEventPageUI> {
             SizedBox(
               height: 40,
             ),
-            FittedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "connected",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
+            // FittedBox(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Text(
+            //         "connected",
+            //         textAlign: TextAlign.center,
+            //         style: TextStyle(
+            //           color: Colors.red,
+            //           fontWeight: FontWeight.bold,
+            //           fontSize: 24,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 40,
+            // ),
+            // TextField(),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 16),
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -128,34 +142,58 @@ class _KeyEventPageUIState extends State<KeyEventPageUI> {
             Spacer(
               flex: 4,
             ),
-            // TextButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => ShowTextPageUI(),
-            //       ),
-            //     );
-            //   },
-            //   child: Text("Contiune"),
-            // ),
             SizedBox(
-              width: MediaQuery.of(context).size.width/1.2,
+              width: MediaQuery.of(context).size.width / 1.2,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ShowTextPageUI(),
-                    ),
-                  );
+                  _openPage(page: SelectTextUI());
                 },
-                child:  Text("Contiune"),
+                child: Text("Metin Seç"),
+              ),
+            ),
+            // Spacer(),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 1.2,
+              child: ElevatedButton(
+                onPressed: () {
+                  _openPage(page: SetTextStyleUI());
+                },
+                child: Text("Metin Stilini Ayarla"),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 1.2,
+              child: ElevatedButton(
+                onPressed: () {
+                  _openPage(page: SetKeysUI());
+                },
+                child: Text("Tuşları Ayarla"),
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 1.2,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                ),
+                onPressed: () {
+                  _openPage(page: ShowTextPageUI());
+                },
+                child: Text("Devam Et"),
               ),
             ),
             Spacer(),
           ],
         ),
+      ),
+    );
+  }
+
+  void _openPage({required Widget page}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: ((context) => page),
       ),
     );
   }
