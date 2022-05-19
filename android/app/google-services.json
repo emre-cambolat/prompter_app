@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "807835445772",
+    "project_id": "prompterapp-2e877",
+    "storage_bucket": "prompterapp-2e877.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807835445772:android:c001291ff736a0207d1c29",
+        "android_client_info": {
+          "package_name": "com.emrecambolat.prompterapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807835445772-6q110kh3jhc2jhru322go5fdnojm5dah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfmGjteU-G1fZXOINovPB29mowWU0BNRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807835445772-6q110kh3jhc2jhru322go5fdnojm5dah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
