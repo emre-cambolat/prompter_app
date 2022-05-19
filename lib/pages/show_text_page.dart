@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'text_example.dart';
 
@@ -29,6 +30,11 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isScroll) {
+      Wakelock.enable();
+    } else {
+      Wakelock.disable();
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Show Text"),
