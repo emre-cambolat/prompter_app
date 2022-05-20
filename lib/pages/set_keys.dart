@@ -12,7 +12,7 @@ class _SetKeysUIState extends State<SetKeysUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Set Keys"),
+        title: Text("Tuşları Ayarla"),
       ),
     );
   }

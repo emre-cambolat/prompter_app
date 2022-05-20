@@ -4,8 +4,15 @@ import 'package:prompter_app/components/app_colors.dart';
 import 'pages/key_event_page.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    //  options: FirebaseOptions(
+    //   apiKey: "AIzaSyBTpryodWHYn1BWpxN8svfRjvvn6JBbkVA", // Your apiKey
+    //   appId: "1:807835445772:web:51f979fa500167de7d1c29", // Your appId
+    //   messagingSenderId: "807835445772", // Your messagingSenderId
+    //   projectId: "prompterapp-2e877", // Your projectId
+    // ),
+  );
   runApp(const MyApp());
 }
 
@@ -22,8 +29,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: AppColors.primaryColor,
           secondary: AppColors.darkGrey,
-
-          // or from RGB
         ),
       ),
       home: const KeyEventPageUI(),
