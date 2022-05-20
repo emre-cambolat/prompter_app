@@ -3,6 +3,7 @@ import 'package:prompter_app/pages/app_info.dart';
 import 'package:prompter_app/pages/select_text.dart';
 import 'package:prompter_app/pages/set_text_style.dart';
 import 'package:prompter_app/services/firebase_services.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'set_keys.dart';
 import 'show_text_page.dart';
 
@@ -14,25 +15,21 @@ class KeyEventPageUI extends StatefulWidget {
 }
 
 class _KeyEventPageUIState extends State<KeyEventPageUI> {
-  late FocusNode _fnListener;
   String _pressedKey = " ";
   @override
   void initState() {
-    _fnListener = FocusNode();
     super.initState();
   }
 
   @override
   void dispose() {
-    _fnListener.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(_fnListener);
 
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Ana Sayfa"),
         actions: [
@@ -123,6 +120,8 @@ class _KeyEventPageUIState extends State<KeyEventPageUI> {
                     ],
                   ),
                 ),
+                TextField(
+                  ),
               ],
             ),
           ),
@@ -138,7 +137,7 @@ class _KeyEventPageUIState extends State<KeyEventPageUI> {
               child: Text("Metin Seç"),
             ),
           ),
-          // Spacer(),
+          _webPadding(),
           SizedBox(
             width: MediaQuery.of(context).size.width / 1.2,
             child: ElevatedButton(
@@ -148,6 +147,8 @@ class _KeyEventPageUIState extends State<KeyEventPageUI> {
               child: Text("Metin Stilini Ayarla"),
             ),
           ),
+          _webPadding(),
+
           SizedBox(
             width: MediaQuery.of(context).size.width / 1.2,
             child: ElevatedButton(
@@ -183,5 +184,13 @@ class _KeyEventPageUIState extends State<KeyEventPageUI> {
         builder: ((context) => page),
       ),
     );
+  }
+
+  Widget _webPadding() {
+    return UniversalPlatform.isWeb
+        ? SizedBox(
+            height: 20,
+          )
+        : SizedBox.shrink();
   }
 }

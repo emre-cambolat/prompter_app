@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:universal_platform/universal_platform.dart';
 import 'package:wakelock/wakelock.dart';
 
 import '../services/firebase_services.dart';
@@ -45,23 +47,36 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
   ];
 
   late bool _isLoading;
-  late FocusNode _focusNode;
+  late FocusNode _fnListener;
+  late FocusNode _fnTextField;
+  // late FocusAttachment _focusAttachment;
   late Map<String, dynamic> _prompterSettings;
 
   @override
   void initState() {
     _scrollController = ScrollController();
-    _focusNode = FocusNode();
+    _fnListener = FocusNode();
+    _fnTextField = FocusNode();
     _prompterSettings = widget.prompterSettings;
     _isLoading = true;
-
+    // if (UniversalPlatform.isAndroid) {
+    //   _focusAttachment = _fnListener.attach(context, onKeyEvent: (node, event) {
+    //     print("eventttt");
+    //     if (event.logicalKey == LogicalKeyboardKey.audioVolumeDown) {
+    //       print("value : enter");
+    //     }
+    //     return KeyEventResult.handled;
+    //   });
+    // }
+    _fnTextField.requestFocus();
     super.initState();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _focusNode.dispose();
+    _fnListener.dispose();
+    _fnTextField.dispose();
     super.dispose();
   }
 
@@ -71,7 +86,6 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
 
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(_focusNode);
 
     return WillPopScope(
       onWillPop: () async {
@@ -80,28 +94,39 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
       },
       child: RawKeyboardListener(
         autofocus: true,
-        focusNode: _focusNode,
+        focusNode: _fnListener,
         onKey: (event) {
-        
+          // debugPrint("---------------------4  " + event.logicalKey.toString());
+          debugPrint("---------------------4  " + event.logicalKey.keyId.toString());
           
-          debugPrint("---------------------4  " + event.logicalKey.toString());
-          debugPrint("---------------------4  " + event.toString());
 
-          // // ! Web
-          // debugPrint("---------------------4  " + event.data.toString());
-          // if (event.data.toString().contains("AudioVolumeUp")) {
-          //   debugPrint("girdiiiii");
-          //   _fastButton();
-          // } else if (event.data.toString().contains("AudioVolumeDown")) {
-          //   _slowButton();
-          // } else if (event.data.toString().contains("MediaPlayPause")) {
-          //   _stopButton();
-          // } else if (event.data.toString().contains("MediaTrackNext")) {
-          //   _downScrollButton();
-          // } else if (event.data.toString().contains("MediaTrackPrevious")) {
-          //   _upScrollButton();
-          // }
-          // ! Web
+          if (UniversalPlatform.isWeb) {
+            debugPrint("---------------------4  " + event.data.toString());
+            if (event.data.toString().contains("AudioVolumeUp")) {
+              _fastButton();
+            } else if (event.data.toString().contains("AudioVolumeDown")) {
+              _slowButton();
+            } else if (event.data.toString().contains("MediaPlayPause")) {
+              _stopButton();
+            } else if (event.data.toString().contains("MediaTrackNext")) {
+              _downScrollButton();
+            } else if (event.data.toString().contains("MediaTrackPrevious")) {
+              _upScrollButton();
+            }
+          }
+          else{
+            if (event.isKeyPressed(LogicalKeyboardKey.audioVolumeUp)) {
+              _fastButton();
+            } else if (event.isKeyPressed(LogicalKeyboardKey.audioVolumeDown)) {
+              _slowButton();
+            } else if (event.isKeyPressed(LogicalKeyboardKey.mediaPlayPause)) {
+              _stopButton();
+            } else if (event.isKeyPressed(LogicalKeyboardKey.mediaTrackNext)) {
+              _downScrollButton();
+            } else if (event.isKeyPressed(LogicalKeyboardKey.mediaTrackPrevious)) {
+              _upScrollButton();
+            }
+          }
         },
         child: Scaffold(
           backgroundColor:
@@ -221,16 +246,23 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
   }
 
   void _moveScroll() {
+    int _pixel = UniversalPlatform.isWeb ? 20 : 10;
     _isScroll = true;
     _scrollController
         .animateTo(
       _reverseDirection
-          ? _scrollController.position.pixels - 10
-          : _scrollController.position.pixels + 10,
-      duration: Duration(
-        // milliseconds: _scrollSpeed,
-        microseconds: _prompterSettings["scroll_speed"],
-      ),
+          ? _scrollController.position.pixels - _pixel
+          : _scrollController.position.pixels + _pixel,
+      duration: UniversalPlatform.isWeb
+          ? Duration(
+              // milliseconds: _prompterSettings["scroll_speed"],
+              microseconds: _prompterSettings["scroll_speed"],
+              // seconds: 1,
+            )
+          : Duration(
+              // milliseconds: _scrollSpeed,
+              microseconds: _prompterSettings["scroll_speed"],
+            ),
       curve: Curves.linear,
     )
         .whenComplete(
