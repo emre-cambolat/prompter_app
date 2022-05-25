@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:prompter_app/pages/app_info.dart';
 import 'package:prompter_app/pages/select_text.dart';
 import 'package:prompter_app/pages/set_text_style.dart';
-import 'package:prompter_app/services/firebase_services.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'set_keys.dart';
-import 'show_text_page.dart';
 
 class KeyEventPageUI extends StatefulWidget {
   const KeyEventPageUI({Key? key}) : super(key: key);

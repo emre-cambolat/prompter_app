@@ -14,7 +14,6 @@ class SelectTextUI extends StatefulWidget {
 }
 
 class _SelectTextUIState extends State<SelectTextUI> {
-
   List<Map<String, dynamic>> _textsList = [];
   late Map<String, dynamic> _prompterSettings;
   late Map<String, dynamic> _textStyle;
@@ -44,67 +43,101 @@ class _SelectTextUIState extends State<SelectTextUI> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Metin Seç"),
-      ),
-      body: SafeArea(
-        child: _isLoading
-            ? loadingIndicator()
-            : ListView.builder(
-                primary: false,
-                physics: BouncingScrollPhysics(),
+    return DefaultTabController(
+      length: 2,
+      initialIndex: 0,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(
+            Icons.add,
+          ),
+          backgroundColor: AppColors.primaryColor,
+          
+        ),
+        appBar: AppBar(
+          title: Text("Metin Seç"),
+          bottom: TabBar(
+            indicatorColor: Colors.white,
+            tabs: [
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
-                itemCount: _textsList.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: ((context) => ShowTextPageUI(
-                                title: _textsList[index]["title"].toString(),
-                                content: _textsList[index]["text"],
-                                prompterSettings: _prompterSettings,
-                                textStyle: _textStyle,
-                              )),
-                        ),
-                      );
-                    },
-                    minVerticalPadding: 8,
-                    leading: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 24,
-                          height: 24,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            (index + 1).toString(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    title: Text(
-                      _textsList[index]["title"].toString(),
-                      maxLines: 1,
-                    ),
-                    subtitle: Text(
-                      _textsList[index]["text"].toString(),
-                      maxLines: 2,
-                    ),
-                  );
-                },
+                child: Text("Sunucudan Eklenenler"),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: Text("Dosyadan Eklenenler"),
+              ),
+            ],
+          ),
+        ),
+        body: SafeArea(
+          child: _isLoading
+              ? loadingIndicator()
+              : TabBarView(
+                  physics: BouncingScrollPhysics(),
+                  children: [
+                    ListView.builder(
+                      primary: false,
+                      physics: BouncingScrollPhysics(),
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      itemCount: _textsList.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: ((context) => ShowTextPageUI(
+                                      title:
+                                          _textsList[index]["title"].toString(),
+                                      content: _textsList[index]["text"],
+                                      prompterSettings: _prompterSettings,
+                                      textStyle: _textStyle,
+                                    )),
+                              ),
+                            );
+                          },
+                          minVerticalPadding: 8,
+                          leading: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 24,
+                                height: 24,
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  (index + 1).toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          title: Text(
+                            _textsList[index]["title"].toString(),
+                            maxLines: 1,
+                          ),
+                          subtitle: Text(
+                            _textsList[index]["text"].toString(),
+                            maxLines: 2,
+                          ),
+                        );
+                      },
+                    ),
+                    Column(
+                      children: [],
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }

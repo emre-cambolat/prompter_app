@@ -13,8 +13,7 @@ class FirebaseService {
     await FirebaseFirestore.instance
         .collection('prompter_app')
         .doc('1EESEtyLtTy447I2qL8K')
-        .update({'prompter_settings': prompterSettings})
-        .whenComplete(() {
+        .update({'prompter_settings': prompterSettings}).whenComplete(() {
       return true;
     });
     return false;
@@ -25,6 +24,16 @@ class FirebaseService {
         .collection('prompter_app')
         .doc('1EESEtyLtTy447I2qL8K')
         .update({'text_style': textStyle}).whenComplete(() {
+      return true;
+    });
+    return false;
+  }
+
+  static Future<bool> UpdateKeys(List<String> keys) async {
+    await FirebaseFirestore.instance
+        .collection('prompter_app')
+        .doc('1EESEtyLtTy447I2qL8K')
+        .update({'key_settings': keys}).whenComplete(() {
       return true;
     });
     return false;

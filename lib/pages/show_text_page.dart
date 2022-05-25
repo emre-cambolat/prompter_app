@@ -86,7 +86,6 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
 
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: () async {
         await _saveChanges();
@@ -97,8 +96,8 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
         focusNode: _fnListener,
         onKey: (event) {
           // debugPrint("---------------------4  " + event.logicalKey.toString());
-          debugPrint("---------------------4  " + event.logicalKey.keyId.toString());
-          
+          debugPrint(
+              "---------------------4  " + event.logicalKey.keyId.toString());
 
           if (UniversalPlatform.isWeb) {
             debugPrint("---------------------4  " + event.data.toString());
@@ -107,23 +106,23 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
             } else if (event.data.toString().contains("AudioVolumeDown")) {
               _slowButton();
             } else if (event.data.toString().contains("MediaPlayPause")) {
-              _stopButton();
+              _pauseButton();
             } else if (event.data.toString().contains("MediaTrackNext")) {
               _downScrollButton();
             } else if (event.data.toString().contains("MediaTrackPrevious")) {
               _upScrollButton();
             }
-          }
-          else{
+          } else {
             if (event.isKeyPressed(LogicalKeyboardKey.audioVolumeUp)) {
               _fastButton();
             } else if (event.isKeyPressed(LogicalKeyboardKey.audioVolumeDown)) {
               _slowButton();
             } else if (event.isKeyPressed(LogicalKeyboardKey.mediaPlayPause)) {
-              _stopButton();
+              _pauseButton();
             } else if (event.isKeyPressed(LogicalKeyboardKey.mediaTrackNext)) {
               _downScrollButton();
-            } else if (event.isKeyPressed(LogicalKeyboardKey.mediaTrackPrevious)) {
+            } else if (event
+                .isKeyPressed(LogicalKeyboardKey.mediaTrackPrevious)) {
               _upScrollButton();
             }
           }
@@ -175,65 +174,75 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
                 padding: EdgeInsets.symmetric(vertical: 12),
                 color: Colors.grey.shade300,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        _downScrollButton();
-                      },
-                      child: Text("Aşağı"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _stopButton();
-                      },
-                      child: Text(
-                        "DUR",
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.yellow,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _upScrollButton();
-                      },
-                      child: Text("Yukarı"),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            _slowButton();
-                          },
-                          child: Text("Yavaş"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal.shade400,
+                    Expanded(
+                      flex: 4,
+                      child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              _downScrollButton();
+                            },
+                            child: Text("Aşağı"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.green,
+                            ),
                           ),
-                        ),
-                        Text(_prompterSettings["scroll_speed"].toString() +
-                            " ms."),
-                        ElevatedButton(
-                          onPressed: () {
-                            _fastButton();
-                          },
-                          child: Text("Hızlı"),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal.shade900,
+                          ElevatedButton(
+                            onPressed: () {
+                              _pauseButton();
+                            },
+                            child: Text(
+                              _isScroll ? "DUR" : "BAŞLAT",
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.yellow,
+                            ),
                           ),
-                        ),
-                      ],
+                          ElevatedButton(
+                            onPressed: () {
+                              _upScrollButton();
+                            },
+                            child: Text("Yukarı"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              _slowButton();
+                            },
+                            child: Text("Yavaş"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.teal.shade400,
+                            ),
+                          ),
+                          Text(_prompterSettings["scroll_speed"].toString() +
+                              " ms."),
+                          ElevatedButton(
+                            onPressed: () {
+                              _fastButton();
+                            },
+                            child: Text("Hızlı"),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.teal.shade900,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -247,35 +256,37 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
 
   void _moveScroll() {
     int _pixel = UniversalPlatform.isWeb ? 20 : 10;
-    _isScroll = true;
-    _scrollController
-        .animateTo(
-      _reverseDirection
-          ? _scrollController.position.pixels - _pixel
-          : _scrollController.position.pixels + _pixel,
-      duration: UniversalPlatform.isWeb
-          ? Duration(
-              // milliseconds: _prompterSettings["scroll_speed"],
-              microseconds: _prompterSettings["scroll_speed"],
-              // seconds: 1,
-            )
-          : Duration(
-              // milliseconds: _scrollSpeed,
-              microseconds: _prompterSettings["scroll_speed"],
-            ),
-      curve: Curves.linear,
-    )
-        .whenComplete(
-      () {
-        if ((_scrollController.position.maxScrollExtent >=
-                    _scrollController.position.pixels ||
-                _scrollController.position.minScrollExtent <=
-                    _scrollController.position.pixels) &&
-            _isScroll) {
-          _moveScroll();
-        }
-      },
-    );
+    setState(() {
+      _isScroll = true;
+      _scrollController
+          .animateTo(
+        _reverseDirection
+            ? _scrollController.position.pixels - _pixel
+            : _scrollController.position.pixels + _pixel,
+        duration: UniversalPlatform.isWeb
+            ? Duration(
+                // milliseconds: _prompterSettings["scroll_speed"],
+                microseconds: _prompterSettings["scroll_speed"],
+                // seconds: 1,
+              )
+            : Duration(
+                // milliseconds: _scrollSpeed,
+                microseconds: _prompterSettings["scroll_speed"],
+              ),
+        curve: Curves.linear,
+      )
+          .whenComplete(
+        () {
+          if ((_scrollController.position.maxScrollExtent >=
+                      _scrollController.position.pixels ||
+                  _scrollController.position.minScrollExtent <=
+                      _scrollController.position.pixels) &&
+              _isScroll) {
+            _moveScroll();
+          }
+        },
+      );
+    });
   }
 
   void _slowButton() {
@@ -294,24 +305,38 @@ class _ShowTextPageUIState extends State<ShowTextPageUI> {
     });
   }
 
-  void _stopButton() {
-    _isScroll = false;
-    Wakelock.disable();
+  void _pauseButton() {
+    setState(() {
+      if (_isScroll) {
+        _isScroll = false;
+        Wakelock.disable();
+      } else {
+        if (_reverseDirection) {
+          _upScrollButton();
+        } else {
+          _downScrollButton();
+        }
+      }
+    });
   }
 
   void _upScrollButton() {
-    _reverseDirection = true;
-    if (_isScroll == false) {
-      Wakelock.enable();
-      _moveScroll();
-    }
+    setState(() {
+      _reverseDirection = true;
+      if (_isScroll == false) {
+        Wakelock.enable();
+        _moveScroll();
+      }
+    });
   }
 
   void _downScrollButton() {
-    _reverseDirection = false;
-    if (_isScroll == false) {
-      Wakelock.enable();
-      _moveScroll();
-    }
+    setState(() {
+      _reverseDirection = false;
+      if (_isScroll == false) {
+        Wakelock.enable();
+        _moveScroll();
+      }
+    });
   }
 }
